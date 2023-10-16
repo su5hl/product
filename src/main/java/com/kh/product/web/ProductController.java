@@ -7,10 +7,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -35,12 +37,28 @@ public class ProductController {
     return "product/list";
   }
 
+  //조회
+  @GetMapping("/{id}/detail")  //GET http://localhost:9080/products/1/detail
+  public String findById(
+      @PathVariable("id") Long id,
+      Model model){
+    //상품조회
+    Optional<Product> findedProduct = productSVC.productList(id);
+    Product product = findedProduct.orElseThrow(); // optional에 product가 있으면 값을 가져오고 product없으면 예외발생
 
+    DetailForm detailForm = new DetailForm();
+    detailForm.setPid(product.getPid());
+    detailForm.setPname(product.getPname());
+    detailForm.setQuantity(product.getQuantity());
+    detailForm.setPrice(product.getPrice());
+
+    model.addAttribute("detailForm",detailForm);
+    return "product/detailForm";
+  }
   //등록
   @GetMapping("/add")
   public String addForm(Model model){
 
-    model.addAttribute("saveForm", new SaveForm());
     return "product/add";
   }
 //
@@ -53,15 +71,14 @@ public class ProductController {
 //
 // //상품등록
 //    Product product = new Product();
+
 //    product.setPname(saveForm.getPname());
 //    product.setQuantity(saveForm.getQuantity());
 //    product.setPrice(saveForm.getPrice());
 //    Long pid = productSVC.save(product);
 //
-//    log.info("상품아이디={}",pid);
-//    redirectAttributes.addAttribute("id", pid);
 //
-//    return "redirect:/products/{id}/detail";
+//    return ;
 //  }
 
 
