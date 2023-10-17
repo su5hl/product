@@ -6,23 +6,34 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>상품등록</title>
+
 </head>
 <body>
 <h3>상품등록</h3>
-<form action="" >
+<form action="" method="post" th:object="${saveForm}">
   <div>
     <label for="pname">상품명</label>
-    <input type="text" id="pname" name="pname" maxlength="10" >
+    <input type="text" id="pname" name="pname" maxlength="10" th:field="*{pname}">
   </div>
   <div>
   <label for="quantity">수량</label>
-  <input type="text" id="quantity" name="quantity" maxlength="10" >
+  <input type="text" id="quantity" name="quantity" maxlength="10" th:field="*{quantity}">
   </div>
   <div>
     <label for="price">가격</label>
-    <input type="text" id="price" name="price" maxlength="10">
+    <input type="text" id="price" name="price" maxlength="10" th:field="*{price}">
   </div>
-  <div><input type="submit" value="등록" ></div>
+  <div>
+    <input type="submit" value="등록">
+    <input type="button" value="취소" id="btnCancel">
+  </div>
 </form>
+<script>
+
+    //등록취소
+    document.getElementById('btnCancel').addEventListener('click',e=>{
+      location.href='/products';
+    });
+  </script>
 </body>
 </html>

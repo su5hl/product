@@ -6,46 +6,65 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>상품조회</title>
+  <style>
+    .title{font-weight: bold;}
+  </style>
 </head>
 <body>
-상품조회
-<form action="" method="post" th:object="${detailForm}">
-  <div><label for="pid">상품번호</label><input type="text" id="pid" name="pid" readonly th:value="*{pid}"></div>
-  <div><label for="pname">상품명</label><input type="text" id="pname" name="pname" readonly th:value="*{pname}"></div>
-  <div><label for="quantity">수량</label><input type="text" id="quantity" name="quantity" readonly th:value="*{quantity}"></div>
-  <div><label for="price">가격</label><input type="text" id="price" name="price" readonly th:value="*{price}"></div>
+<h3>상품조회</h3>
+<form action="" method="post" th:object="${detailForm} ">
   <div>
-    <input type="button" value="수정" id="btnUpdate" th:data-product-id="*{pid}" >
-    <input type="button" value="삭제" id="btnDelete" th:data-product-id="*{pid}">
-    <input type="button" value="목록" id="btnFindAll">
+    <label class="title">상품번호 : </label>
+    <span th:text="*{pid}"></span>
+  </div>
+  <div>
+    <label class="title">상품명 : </label>
+    <span th:text="*{pname}"></span>
+<!--    <label for="pname">상품명</label>-->
+<!--    <input type="text" id="pname" name="pname" readonly th:value="*{pname}">-->
+  </div>
+  <div>
+    <label class="title">수량 : </label>
+    <span th:text="*{quantity}"></span>
+<!--    <label for="quantity">수량</label>-->
+<!--    <input type="text" id="quantity" name="quantity" readonly th:value="*{quantity}"></div>-->
+  </div>
+  <div>
+    <label class="title">가격 : </label>
+    <span th:text="*{price}"></span>
+<!--    <label for="price">가격</label>-->
+<!--    <input type="text" id="price" name="price" readonly th:value="*{price}">-->
+  </div>
+  <div>
+    <input type="button" value="수정" id="btnUpdate" th:data-pid="*{pid}" >
+    <input type="button" value="삭제" id="btnDelete" th:data-pid="*{pid}">
+    <input type="button" value="목록" id="btnList">
   </div>
 </form>
 <script>
-
-
-    //삭제
+  //수정
+  document.getElementById('btnUpdate').addEventListener('click',e=>{
+      const pid = e.target.dataset.pid;
+      const url = `/products/${pid}`;
+      location.href = url;
+    });
+   //삭제
     document.getElementById('btnDelete').addEventListener('click', e=>{
-      if(confirm('삭제하시겠습니까?')){
-        const productId = e.target.dataset.productId;
+      if(confirm('삭제합니다')){
+        const pid = e.target.dataset.pid;
 
         (async ()=>{
-          const url = `/products/${productId}`;
+          const url = `/products/${pid}`;
           const option = {
-            method:'DELETE'
-          }
+            method:'DELETE'}
           const result = await fetch(url,option);
           location.href = '/products';
         })();
       }
     });
-   //수정
-    document.getElementById('btnUpdate').addEventListener('click',e=>{
-      const productId = e.target.dataset.productId;
-      const url = `/products/${productId}`;
-      location.href = url;
-    });
+
     //목록
-    document.getElementById('btnFindAll').addEventListener('click',e=>{
+    document.getElementById('btnList').addEventListener('click',e=>{
       location.href='/products';
     });
   </script>
